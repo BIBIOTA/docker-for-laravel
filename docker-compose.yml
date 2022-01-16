@@ -25,10 +25,11 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - 8080:80
+      - 80:80
       - 443:443
     volumes:
       - ${PROJECT_PATH}:/var/www/html/app
+      - ./nginx/log:/var/log/nginx
     environment:
       - TZ=Asia/Taipei
     networks:
@@ -53,6 +54,7 @@ services:
   # phpmyadmin
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
     ports:
         - 8000:8000
     environment:
@@ -71,6 +73,8 @@ services:
       - ./redis:/data
     ports:
       - "6379:6379"
+    networks:
+      - backend
 
 networks:
   backend:

@@ -1,5 +1,7 @@
 .env
 
+/nginx/log
+
 /mysql/sqls/privileges.sql
 
 redis/dump.rdb

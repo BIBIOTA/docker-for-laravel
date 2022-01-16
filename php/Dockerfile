@@ -22,6 +22,11 @@ RUN pecl install -o -f redis \
 		&&  rm -rf /tmp/pear \
 		&&  docker-php-ext-enable redis
 
+# setting crontab
+COPY ./php/crontab /var/spool/cron/crontabs/root
+RUN chmod 0644 /var/spool/cron/crontabs/root
+RUN crontab /var/spool/cron/crontabs/root
+
 # add mysqli
 RUN printf "\n" | docker-php-ext-install mysqli
 
@@ -37,5 +42,7 @@ RUN apk --no-cache add shadow && \
     groupmod -g 1000 www-data
 
 WORKDIR /var/www/html/app
+
+CMD ["php-fpm"]
 
 #EOF
