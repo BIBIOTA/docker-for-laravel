@@ -23,12 +23,16 @@ services:
       dockerfile: ./nginx/Dockerfile
     container_name: nginx
     restart: unless-stopped
+    tty: true
     ports:
-      - 80:80
+      - 8080:80
+      - 443:443
     volumes:
       - ${PROJECT_PATH}:/var/www/html/app
     environment:
       - TZ=Asia/Taipei
+    networks:
+      - backend
 
   # Mysql
   mysql:
@@ -50,7 +54,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
-        - 8000:80
+        - 8000:8000
     environment:
         - PMA_ARBITRARY=1
         - PMA_HOST=mysql
