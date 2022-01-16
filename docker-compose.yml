@@ -1,0 +1,73 @@
+version: "2"
+
+services:
+
+  # php-fpm 8.0
+  php:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name: php
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    volumes:
+      - ${PROJECT_PATH}:/var/www/html/app
+    networks:
+      - backend
+
+  # nginx
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ${PROJECT_PATH}:/var/www/html/app
+    environment:
+      - TZ=Asia/Taipei
+
+  # Mysql
+  mysql:
+    build:
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - backend
+
+  # phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+        - 8000:80
+    environment:
+        - PMA_ARBITRARY=1
+        - PMA_HOST=mysql
+    networks:
+        - backend
+
+# Redis
+  redis:
+    build:
+      context: .
+      dockerfile: ./redis/Dockerfile
+    container_name: redis
+    volumes:
+      - ./redis:/data
+    ports:
+      - "6379:6379"
+
+networks:
+  backend:
+    driver: bridge

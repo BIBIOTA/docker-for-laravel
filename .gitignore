@@ -1,0 +1,7 @@
+.env
+
+/mysql/sqls/privileges.sql
+
+redis/dump.rdb
+
+/kubenetes
