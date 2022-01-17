@@ -3,6 +3,7 @@
 /nginx/log
 
 /mysql/sqls/privileges.sql
+/mysql/mysql-data
 
 redis/dump.rdb
 

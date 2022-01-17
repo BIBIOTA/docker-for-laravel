@@ -69,13 +69,6 @@ RUN apt-get install -y --force-yes --no-install-recommends  && \
     usermod -u 1000 www-data && \
     groupmod -g 1000 www-data
 
-WORKDIR /var/www/html/app
-
-COPY ./php/entrypoint.sh /
-ENTRYPOINT /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh
-
 # setting crontab
 COPY ./php/crontab /var/spool/cron/crontabs/root
 RUN chmod 0644 /var/spool/cron/crontabs/root
@@ -84,6 +77,11 @@ RUN crontab /var/spool/cron/crontabs/root
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 
-CMD ["php-fpm"]
+# make permisstion
+RUN chown -R www-data:www-data /var/www
+
+WORKDIR /var/www/html/app
+
+CMD bash -c "cron && php-fpm"
 
 #EOF

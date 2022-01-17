@@ -44,6 +44,8 @@ services:
     restart: unless-stopped
     ports:
       - 3306:3306
+    volumes:
+      - ./mysql/mysql-data:/var/lib/mysql
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
