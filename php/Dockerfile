@@ -3,6 +3,7 @@ MAINTAINER OTA
 
 RUN apt-get update && \
     apt-get install -y --force-yes --no-install-recommends \
+				vim \
         libmemcached-dev \
         libmcrypt-dev \
         libreadline-dev \
@@ -79,6 +80,9 @@ RUN chmod +x /entrypoint.sh
 COPY ./php/crontab /var/spool/cron/crontabs/root
 RUN chmod 0644 /var/spool/cron/crontabs/root
 RUN crontab /var/spool/cron/crontabs/root
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
 
 CMD ["php-fpm"]
 

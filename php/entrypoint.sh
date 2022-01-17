@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cron -f &
+cron -f &&
 docker-php-entrypoint php-fpm
