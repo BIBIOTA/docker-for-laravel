@@ -54,10 +54,6 @@ RUN pecl install -o -f redis \
 		&&  rm -rf /tmp/pear \
 		&&  docker-php-ext-enable redis
 
-# setting crontab
-RUN echo "* * * * * root /usr/local/bin/php /var/www/html/app/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
-RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
 # add mysqli
 RUN printf "\n" | docker-php-ext-install mysqli
 
@@ -78,6 +74,11 @@ COPY ./php/entrypoint.sh /
 ENTRYPOINT /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
+
+# setting crontab
+COPY ./php/crontab /var/spool/cron/crontabs/root
+RUN chmod 0644 /var/spool/cron/crontabs/root
+RUN crontab /var/spool/cron/crontabs/root
 
 CMD ["php-fpm"]
 
