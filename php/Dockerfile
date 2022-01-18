@@ -3,7 +3,7 @@ MAINTAINER OTA
 
 RUN apt-get update && \
     apt-get install -y --force-yes --no-install-recommends \
-				vim \
+        vim \
         libmemcached-dev \
         libmcrypt-dev \
         libreadline-dev \
@@ -70,18 +70,15 @@ RUN apt-get install -y --force-yes --no-install-recommends  && \
     groupmod -g 1000 www-data
 
 # setting crontab
-COPY ./php/crontab /var/spool/cron/crontabs/root
+COPY crontab /var/spool/cron/crontabs/root
 RUN chmod 0644 /var/spool/cron/crontabs/root
 RUN crontab /var/spool/cron/crontabs/root
-
-# Create the log file to be able to run tail
-RUN touch /var/log/cron.log
 
 # make permisstion
 RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/html/app
 
-CMD bash -c "cron && php-fpm"
-
-#EOF
+COPY ./app-entrypoint.sh /
+RUN chmod -R 0755 /app-entrypoint.sh
+ENTRYPOINT /app-entrypoint.sh

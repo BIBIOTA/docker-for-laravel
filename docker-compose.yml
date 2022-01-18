@@ -1,4 +1,4 @@
-version: "2"
+version: "3.7"
 
 services:
 
@@ -12,7 +12,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - ${PROJECT_PATH}:/var/www/html/app
+      - ${PROJECT_PATH}/:/var/www/html/app
     networks:
       - backend
 
@@ -28,7 +28,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ${PROJECT_PATH}:/var/www/html/app
+      - ${PROJECT_PATH}/:/var/www/html/app
       - ./nginx/log:/var/log/nginx
     environment:
       - TZ=Asia/Taipei
