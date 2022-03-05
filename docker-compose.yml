@@ -10,7 +10,7 @@ services:
     container_name: php
     restart: unless-stopped
     ports:
-      - 9000:9000
+      - 8000:8000
     volumes:
       - ${PROJECT_PATH}/:/var/www/html/app
     networks:
@@ -46,6 +46,7 @@ services:
       - 3306:3306
     volumes:
       - ./mysql/mysql-data:/var/lib/mysql
+      - ./mysql/mysql-logs:/var/log
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -58,7 +59,7 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin
     ports:
-        - 8000:8000
+        - 9000:9000
     environment:
         - PMA_ARBITRARY=1
         - PMA_HOST=mysql
