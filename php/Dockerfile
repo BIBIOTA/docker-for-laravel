@@ -21,7 +21,8 @@ RUN apt-get update && \
         cron \
         nano \
         libxml2-dev \
-        mariadb-client
+        mariadb-client \
+        supervisor
 
 # Install soap extention
 RUN docker-php-ext-install soap
@@ -64,6 +65,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& php composer-setup.php \
 	&& php -r "unlink('composer-setup.php');" \
 	&& mv composer.phar /usr/bin/composer
+RUN chmod +x /usr/bin/composer
 
 # change www-data's uid and gid for laravel folder permisstion
 RUN apt-get install -y --force-yes --no-install-recommends  && \
@@ -80,6 +82,10 @@ RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/html/app
 
+# Open Ports
+EXPOSE 8000
+
+# Entrypoint
 COPY ./app-entrypoint.sh /
 RUN chmod -R 0755 /app-entrypoint.sh
 ENTRYPOINT /app-entrypoint.sh

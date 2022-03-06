@@ -29,6 +29,8 @@ services:
       - 443:443
     volumes:
       - ${PROJECT_PATH}/:/var/www/html/app
+      - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./nginx/log:/var/log/nginx
     environment:
       - TZ=Asia/Taipei
@@ -58,8 +60,6 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin
-    ports:
-        - 9000:9000
     environment:
         - PMA_ARBITRARY=1
         - PMA_HOST=mysql
