@@ -22,7 +22,10 @@ RUN apt-get update && \
         nano \
         libxml2-dev \
         mariadb-client \
-        supervisor
+        supervisor \
+        npm
+
+RUN npm install chokidar
 
 # Install soap extention
 RUN docker-php-ext-install soap
@@ -66,6 +69,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& php -r "unlink('composer-setup.php');" \
 	&& mv composer.phar /usr/bin/composer
 RUN chmod +x /usr/bin/composer
+RUN /usr/bin/composer global require phpunit/phpunit
+RUN /usr/bin/composer global require friendsofphp/php-cs-fixer
 
 # change www-data's uid and gid for laravel folder permisstion
 RUN apt-get install -y --force-yes --no-install-recommends  && \
